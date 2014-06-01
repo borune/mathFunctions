@@ -50,7 +50,7 @@ exports.mathFn = function mathFn() {
     }
 
     function vProject(a, b) { // project a on b
-		return vMult(b, vDot(b, a) / square(vAbs(b))	    	
+        return vMult(b, vDot(b, a) / square(vAbs(b)))            
     }
 
     function lDist(c, a, b) { 	// distance from point "c" to line with two points "a" and "b"
@@ -61,17 +61,10 @@ exports.mathFn = function mathFn() {
     		vCpl = vAbs(vCp),
     		vFrom = {};
 
-        console.log("with in: ");
-        console.log(vC);
-        console.log(vB);
-        console.log(vCp);
-
-    	console.log("ships point: " + c.x + "\t," + c.z + " \t from a to c: " + vAbs(vC));
-
     	if ( dotBC < 0 ) {
     		console.log("lower")
     		vFrom = a;
-    	} else if ( vCpl < vAbs(vB) ) {
+    	} else if ( vCpl > vAbs(vB) ) {
     		console.log("higher")
     		vFrom = b;
     	} else {
