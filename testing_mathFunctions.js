@@ -1,4 +1,5 @@
-var mFn = require('./mathFunctions.js').mathFn();
+var mFn = require('./mathFunctions.js')();
+var mMethods = require('./mathFunctions.js')("numberMethods");
 var should = require('chai').should() //actually call the the function
 
 var functionText = '';
@@ -27,6 +28,14 @@ console.log( mFn.vAbs(AC) );
 
 console.log( mFn.vProject(AB, AC) ); // AB onto AC
 
+
+var nr = Object.create(mMethods);
+nr.value = 6;
+console.log(nr.value + " + 4 = " + nr.add(4).value);
+console.log("10 squared = " + nr.square().value);
+console.log("Squareroot of 100 = " + nr.sqrt().value);
+console.log(nr.value + " - 4 = " + nr.minus(4).value);
+console.log("sqroot( (6 + 4)^2 ) -4 = " + nr.add(4).square().sqrt().minus(4).value);
 
 
 

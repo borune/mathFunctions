@@ -1,4 +1,29 @@
-exports.mathFn = function mathFn() {
+module.exports = function mathFn(use) {
+    if (use === "numberMethods") {
+        return { 
+            add: addm,
+            minus: minusm,
+            diag: diagm,
+            square: squarem,
+            sqrt: sqrtm
+        }
+    } else {
+        return { 
+            add: add,
+            minus: minus,
+            diag: diag,
+            square: square,
+            sqrt: sqrt,
+            vDot: vDot,
+            vAbs: vAbs,
+            vMult: vMult,
+            vDist: vDist,
+            vAdd: vAdd,
+            vProject: vProject,
+            lDist: lDist
+        }
+    }
+
 
     function square(x) {
         return (x*x);
@@ -73,20 +98,85 @@ exports.mathFn = function mathFn() {
 		return vAbs( vDist( vFrom, c ) );
     }
 
+//******************************************************
+//  Methods
+//******************************************************
 
+    function squarem() {
+        this.value = this.value * this.value;
+        return this;
+    }
 
+    function addm(x) {
+        this.value += x;
+        return this
+    }
 
-    return { 
-    	add: add,
-        minus: minus,
-    	diag: diag,
-    	square: square,
-        vDot: vDot,
-        vAbs: vAbs,
-        vMult: vMult,
-        vDist: vDist,
-        vAdd: vAdd,
-        vProject: vProject,
-    	lDist: lDist
-    };
+    function sqrtm() {
+        this.value = Math.sqrt(this.value);
+        return this
+    }
+   
+    function diagm(x, y) {
+        return sqrt( add( square(x), square(y) ) );
+    }
+
+    function minusm(x) {
+        this.value -= x;
+        return this
+    }
+
+    function vDotm(a, b) {
+        return a.x * b.x + a.z * b.z;
+    }
+
+    function vAbsm(a) {
+        return sqrt( add( square(a.x), square(a.z) ) );
+    }
+
+    function vMultm(a, x) {
+        return { 
+            x: a.x * x,
+            z: a.z * x
+        };              
+    }
+
+    function vDistm(a, b) { // from a to b
+        return { 
+            x: minus(a.x, b.x),
+            z: minus(a.z, b.z)
+        };
+    }
+
+    function vAddm(a, b) { // from a to b
+        return { 
+            x: add(a.x, b.x),
+            z: add(a.z, b.z)
+        };
+    }
+
+    function vProjectm(a, b) { // project a on b
+        return vMult(b, vDot(b, a) / square(vAbs(b)))            
+    }
+
+    function lDistm(c, a, b) {   // distance from point "c" to line with two points "a" and "b"
+        var vC = vDist( a, c ),
+            vB = vDist( a, b ),
+            dotBC = vDot(vB, vC),
+            vCp = vProject( vC, vB ),
+            vCpl = vAbs(vCp),
+            vFrom = {};
+
+        if ( dotBC < 0 ) {
+            console.log("lower")
+            vFrom = a;
+        } else if ( vCpl > vAbs(vB) ) {
+            console.log("higher")
+            vFrom = b;
+        } else {
+            vFrom = vAdd(a, vCp)
+        }
+        return vAbs( vDist( vFrom, c ) );
+    }
+
 }
