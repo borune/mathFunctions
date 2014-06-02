@@ -19,7 +19,7 @@ var test = require('tape');
 test('testing mathFunctions:', function (t) {
 
     t.equal( mathFn.add(2,-3), -1);
-    t.equal( mathFn.minus(2, 3), -1);
+    t.equal( mathFn.minus(2, 3), 1);
     t.equal( mathFn.square(3), 9);
     t.equal( mathFn.sqrt(9), 3); 
     t.equal( mathFn.diag(3, 4), 5);
