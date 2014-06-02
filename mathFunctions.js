@@ -7,6 +7,15 @@ module.exports = function mathFn(use) {
             square: squarem,
             sqrt: sqrtm
         }
+    } else if (use === "vectorMethods") {
+        return { 
+            vDot: vDotm,
+            vAbs: vAbsm,
+            vMult: vMultm,
+            vDist: vDistm,
+            vAdd: vAddm,
+            vProject: vProjectm
+        }
     } else {
         return { 
             add: add,
@@ -102,14 +111,14 @@ module.exports = function mathFn(use) {
 //  Methods
 //******************************************************
 
-    function squarem() {
-        this.value = this.value * this.value;
-        return this;
-    }
-
     function addm(x) {
         this.value += x;
         return this
+    }
+
+    function squarem() {
+        this.value = this.value * this.value;
+        return this;
     }
 
     function sqrtm() {

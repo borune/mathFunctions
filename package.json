@@ -3,17 +3,30 @@
   "version": "0.0.0",
   "description": "Math functions for basic 2D vector calculation",
   "main": "mathFunctions.js",
-  "scripts": {
-    "test": "testing_mathFunctions.js"
-  },
   "keywords": [
     "math",
     "vector",
     "2d"
   ],
-  "author": "Rune TC Petersen",
-  "license": "BSD-2-Clause",
-  "dependencies": {
-    "chai": "~1.9.1"
+  "author": "Rune T.C. Petersen",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "~2.4.0"
+  },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": [
+      "ie/6..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/6",
+      "ipad/6",
+      "android-browser/latest"
+    ]
+  },
+  "scripts": {
+    "test": "tape test/test.js"
   }
 }

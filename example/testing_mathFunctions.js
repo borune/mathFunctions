@@ -1,6 +1,9 @@
 var mFn = require('./mathFunctions.js')();
-var mMethods = require('./mathFunctions.js')("numberMethods");
-var should = require('chai').should() //actually call the the function
+var mathNumMethods = require('./mathFunctions.js')("numberMethods");
+var mathVecMethods = require('./mathFunctions.js')("vectorMethods");
+var expect = require('chai').expect
+
+
 
 var functionText = '';
 for (var func in mFn) { functionText += mFn[func] }   
@@ -29,7 +32,7 @@ console.log( mFn.vAbs(AC) );
 console.log( mFn.vProject(AB, AC) ); // AB onto AC
 
 
-var nr = Object.create(mMethods);
+var nr = Object.create(mathNumMethods);
 nr.value = 6;
 console.log(nr.value + " + 4 = " + nr.add(4).value);
 console.log("10 squared = " + nr.square().value);
@@ -40,19 +43,19 @@ console.log("sqroot( (6 + 4)^2 ) -4 = " + nr.add(4).square().sqrt().minus(4).val
 
 
 
-
 var foo = 'bar',
     beverages = { tea: [ 'chai', 'matcha', 'oolong' ] };
 
-foo.should.be.a('string');
-foo.should.equal('bar');
-foo.should.have.length(3);
-beverages.should.have.property('tea').with.length(3);
+
+expect(nr.value).to.be.a('Number');
+expect(nr.value).to.equal(7);
+expect(foo).to.have.length(3);
+expect(tea).to.have.property('flavors').with.length(3);
 
 
 
 
-
+console.log("the end")
 
 
 
