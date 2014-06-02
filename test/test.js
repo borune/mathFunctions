@@ -16,9 +16,17 @@
 var mathFn = require('../')();
 var test = require('tape');
 
-test('simple comparisons', function (t) {
-    t.plan(1);
+test('testing mathFunctions:', function (t) {
 
-    var n = mathFn.add(2,-3);
-    t.equal(n, -1);
+    t.equal( mathFn.add(2,-3), -1);
+    t.equal( mathFn.minus(2, 3), -1);
+    t.equal( mathFn.square(3), 9);
+    t.equal( mathFn.sqrt(9), 3); 
+    t.equal( mathFn.diag(3, 4), 5);
+
+    // t.equal( mathFn.vDot(a, b) 
+    // t.equal( mathFn.vAbs(a) 
+    // t.equal( mathFn.vMult(a, x) 
+
+    t.end()
 });

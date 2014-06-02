@@ -1,6 +1,6 @@
 {
   "name": "mathFunctions",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Math functions for basic 2D vector calculation",
   "main": "mathFunctions.js",
   "keywords": [
@@ -14,19 +14,23 @@
     "tape": "~2.4.0"
   },
   "testling": {
-    "files": "test/*.js",
+    "files": "test/test.js",
     "browsers": [
-      "ie/6..latest",
       "chrome/22..latest",
+      "chrome/canary",
       "firefox/16..latest",
-      "safari/latest",
+      "firefox/nightly",
+      "safari/5.1..latest",
+      "ie/6..latest",
       "opera/11.0..latest",
+      "opera/next",
       "iphone/6",
       "ipad/6",
-      "android-browser/latest"
+      "android-browser/4.2..latest"
     ]
   },
   "scripts": {
     "test": "tape test/test.js"
-  }
+  },
+  "license": "MIT Copyright (c) 2014 Rune Taj Clemens Petersen",
 }

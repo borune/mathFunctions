@@ -1,4 +1,4 @@
-var mFn = require('./mathFunctions.js')();
+var mFn = require('../mathFunctions.js')();
 var mathNumMethods = require('./mathFunctions.js')("numberMethods");
 var mathVecMethods = require('./mathFunctions.js')("vectorMethods");
 var expect = require('chai').expect
@@ -76,3 +76,9 @@ var walls = [
 	// 	secondPoint: {x: -800,z:-800}
 	// }
 ]
+
+    // t.equal( mathFn.add(2,-3), -1);
+    // t.equal( mathFn.minus(2,-3), 5);
+    // t.equal( mathFn.square(3), 9);
+    // t.equal( mathFn.sqrt(9), 3); 
+    // t.equal( mathFn.diag(3, 4), 5);

@@ -5,13 +5,14 @@ Basic mathematical functions or methods.
 [![browser support](https://ci.testling.com/borune/mathFunctions.png)
 ](https://ci.testling.com/borune/mathFunctions)
 
-# example
+# examples
 
 Function
 ```
-var mFn = require('./mathFunctions.js')();
+var mathFn = require('./mathFunctions.js')();
 
-mFn.add(2, 3); // result: 5
+mathFn.add(2, 3); // result: 5
+mathFn.minus(2, 3); // result: -1
 ```
 
 Method
@@ -33,6 +34,6 @@ var result = nr.add(4).square().sqrt().minus(4).value;
 				// result: 6
 ```
 
-# license
+# License
 
-MIT
+MIT Copyright (c) 2014 Rune Taj Clemens Petersen
