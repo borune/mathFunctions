@@ -1,5 +1,5 @@
 {
-  "name": "mathFunctions",
+  "name": "mathfunctions",
   "description": "Math functions for basic 2D vector calculation",
   "main": "mathFunctions.js",
   "keywords": [
