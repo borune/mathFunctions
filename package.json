@@ -31,5 +31,9 @@
   "scripts": {
     "test": "tape test/test.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:borune/mathFunctions.git"
+  },
   "version": "0.0.3"
 }
