@@ -31,6 +31,5 @@
   },
   "scripts": {
     "test": "tape test/test.js"
-  },
-  "license": "MIT Copyright (c) 2014 Rune Taj Clemens Petersen",
+  }
 }
