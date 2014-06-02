@@ -17,6 +17,7 @@ var mathFn = require('../')();
 var test = require('tape');
 
 test('testing mathFunctions:', function (t) {
+    t.plan(5);
 
     t.equal( mathFn.add(2,-3), -1);
     t.equal( mathFn.minus(2, 3), 1);
@@ -28,5 +29,5 @@ test('testing mathFunctions:', function (t) {
     // t.equal( mathFn.vAbs(a) 
     // t.equal( mathFn.vMult(a, x) 
 
-    t.end()
+    // t.end()
 });
