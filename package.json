@@ -15,7 +15,7 @@
   "testling": {
     "files": "test/test.js",
     "browsers": [
-      "chrome/22..latest",
+      "chrome/24..latest",
       "chrome/canary",
       "firefox/16..latest",
       "firefox/nightly",
