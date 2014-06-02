@@ -30,5 +30,6 @@
   },
   "scripts": {
     "test": "tape test/test.js"
-  }
+  },
+  "version": "0.0.3"
 }
