@@ -126,8 +126,9 @@ module.exports = function mathFn(use) {
         return this
     }
    
-    function diagm(x, y) {
-        return sqrt( add( square(x), square(y) ) );
+    function diagm(x) {
+        this.value = sqrt( add( square(this.value), square(x) ) )
+        return this
     }
 
     function minusm(x) {
