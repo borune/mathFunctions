@@ -12,22 +12,37 @@
 // })
 
 if (typeof Object.create != 'function') {
-    (function () {
-        var F = function () {};
-        Object.create = function (o) {
-            if (arguments.length > 1) { 
-              throw Error('Second argument not supported');
-            }
-            if (o === null) { 
-              throw Error('Cannot set a null [[Prototype]]');
-            }
-            if (typeof o != 'object') { 
-              throw TypeError('Argument must be an object');
-            }
-            F.prototype = o;
-            return new F();
-        };
-    })();
+	try {
+	    (function () {
+			Object.create = function(o, props) {
+				function F() {}
+				F.prototype = o;
+
+				if (typeof(props) === "object") {
+					for (prop in props) {
+						if (props.hasOwnProperty((prop))) {
+							F[prop] = props[prop];
+						}
+					}
+				}
+				return new F();
+			};
+	    })();
+   	} catch (ex){
+	    if (ex instanceof TypeError){
+	        //handle the error
+	    } else if (ex instanceof ReferenceError){
+	        //handle the error
+	    } else {
+			(function () {
+		        var F = function () {};
+		        Object.create = function (o) {
+		            F.prototype = o;
+		            return new F();
+		        };
+		    })();
+	    }
+	}
 }
 
 var test = require('tape'),
