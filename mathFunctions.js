@@ -14,7 +14,8 @@ module.exports = function mathFn(use) {
             vMult: vMultm,
             vDist: vDistm,
             vAdd: vAddm,
-            vProject: vProjectm
+            vProject: vProjectm,
+            lDist: lDistm
         }
     } else {
         return { 
@@ -33,13 +34,16 @@ module.exports = function mathFn(use) {
         }
     }
 
+    function add(x, y) {
+        return (x+y);
+    }
+
+    function minus(x, y) {
+        return x - y;
+    }
 
     function square(x) {
         return (x*x);
-    }
-
-    function add(x, y) {
-        return (x+y);
     }
 
     function sqrt(x) {
@@ -48,10 +52,6 @@ module.exports = function mathFn(use) {
    
     function diag(x, y) {
         return sqrt( add( square(x), square(y) ) );
-    }
-
-    function minus(x, y) {
-		return y - x;
     }
 
     function vDot(a, b) {
@@ -71,8 +71,8 @@ module.exports = function mathFn(use) {
 
     function vDist(a, b) { // from a to b
 		return { 
-			x: minus(a.x, b.x),
-			z: minus(a.z, b.z)
+			x: minus(b.x, a.x),
+			z: minus(b.z, a.z)
 		};
     }
 
@@ -87,7 +87,8 @@ module.exports = function mathFn(use) {
         return vMult(b, vDot(b, a) / square(vAbs(b)))            
     }
 
-    function lDist(c, a, b) { 	// distance from point "c" to line with two points "a" and "b"
+    // distance from point "c" to line with two points "a" and "b"
+    function lDist(c, a, b) { 	
         var vC = vDist( a, c ),
     		vB = vDist( a, b ),
     		dotBC = vDot(vB, vC),
@@ -136,41 +137,41 @@ module.exports = function mathFn(use) {
         return this
     }
 
-    function vDotm(a, b) {
-        return a.x * b.x + a.z * b.z;
+    function vDotm(b) {
+        return this.value.x * b.x + this.value.z * b.z;
     }
 
-    function vAbsm(a) {
-        return sqrt( add( square(a.x), square(a.z) ) );
+    function vAbsm() {
+        return sqrt( add( square(this.value.x), square(this.value.z) ) );
     }
 
-    function vMultm(a, x) {
-        return { 
-            x: a.x * x,
-            z: a.z * x
-        };              
+    function vMultm(k) {
+        this.value.x = this.value.x * k;
+        this.value.z = this.value.z * k;
+        return this  
     }
 
-    function vDistm(a, b) { // from a to b
-        return { 
-            x: minus(a.x, b.x),
-            z: minus(a.z, b.z)
-        };
+    function vDistm(b) { // from a to b
+        this.value.x = minus(b.x, this.value.x);
+        this.value.z = minus(b.z, this.value.z);
+        return this
     }
 
-    function vAddm(a, b) { // from a to b
-        return { 
-            x: add(a.x, b.x),
-            z: add(a.z, b.z)
-        };
+    function vAddm(b) { // from a to b
+        this.value.x = add(b.x, this.value.x);
+        this.value.z = add(b.z, this.value.z);
+        return this
     }
 
-    function vProjectm(a, b) { // project a on b
-        return vMult(b, vDot(b, a) / square(vAbs(b)))            
+    function vProjectm(b) { // project a on b
+        var v = vMult(b, vDot(b, this.value) / square(vAbs(b)));
+        this.value.x = v.x;
+        this.value.z = v.z;
+        return this
     }
 
-    function lDistm(c, a, b) {   // distance from point "c" to line with two points "a" and "b"
-        var vC = vDist( a, c ),
+    function lDistm(a, b) {   // distance from point "c" to line with two points "a" and "b"
+        var vC = vDist( a, this.value ),
             vB = vDist( a, b ),
             dotBC = vDot(vB, vC),
             vCp = vProject( vC, vB ),
@@ -186,7 +187,7 @@ module.exports = function mathFn(use) {
         } else {
             vFrom = vAdd(a, vCp)
         }
-        return vAbs( vDist( vFrom, c ) );
+        return vAbs( vDist( vFrom, this.value ) );
     }
 
 }
