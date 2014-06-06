@@ -1,27 +1,13 @@
+/*global module*/
 module.exports = function mathFn(use) {
-    if (use === "numberMethods") {
-        return { 
-            add: addm,
-            minus: minusm,
-            diag: diagm,
-            square: squarem,
-            sqrt: sqrtm
-        }
-    } else if (use === "vectorMethods") {
-        return { 
-            vDot: vDotm,
-            vAbs: vAbsm,
-            vMult: vMultm,
-            vDist: vDistm,
-            vAdd: vAddm,
-            vProject: vProjectm,
-            lDist: lDistm
-        }
-    } else {
-        return { 
+    'use strict';
+    var firstCoord = 'x';
+    var secondCoord = 'y';
+    var ref = { 
+        fn: {
             add: add,
             minus: minus,
-            diag: diag,
+            diag: Math.hypot || diag,
             square: square,
             sqrt: sqrt,
             vDot: vDot,
@@ -31,7 +17,55 @@ module.exports = function mathFn(use) {
             vAdd: vAdd,
             vProject: vProject,
             lDist: lDist
+        },
+        method: {
+            add: addm,
+            minus: minusm,
+            diag: diagm,
+            square: squarem,
+            sqrt: sqrtm,        
+            vDot: vDotm,
+            vAbs: vAbsm,
+            vMult: vMultm,
+            vDist: vDistm,
+            vAdd: vAddm,
+            vProject: vProjectm,
+            lDist: lDistm
         }
+    };
+
+    if(toType(use) === 'object') {
+        firstCoord = use.firstCoord || 'x';
+        secondCoord = use.secondCoord || 'y';
+
+        if(toType(use.select) === 'object') {
+            var s = {};
+            for(var each in use.select) {
+                s[each] = ref[use.select[each]][each];
+            }
+            return s;
+        }
+
+    } else if (use === 'numberMethods') {
+        return { 
+            add: addm,
+            minus: minusm,
+            diag: diagm,
+            square: squarem,
+            sqrt: sqrtm
+        };
+    } else if (use === 'vectorMethods') {
+        return { 
+            vDot: vDotm,
+            vAbs: vAbsm,
+            vMult: vMultm,
+            vDist: vDistm,
+            vAdd: vAddm,
+            vProject: vProjectm,
+            lDist: lDistm
+        };
+    } else {
+        return ref.fn;
     }
 
     function add(x, y) {
@@ -54,37 +88,38 @@ module.exports = function mathFn(use) {
         return sqrt( add( square(x), square(y) ) );
     }
 
+    function vAdd(a, b) { // from a to b
+        var o = {};
+        o[firstCoord] = add(a[firstCoord], b[firstCoord]);
+        o[secondCoord] = add(a[secondCoord], b[secondCoord]);
+        return o;
+    }
+
     function vDot(a, b) {
-		return a.x * b.x + a.z * b.z;
+		return a[firstCoord] * b[firstCoord] + a[secondCoord] * b[secondCoord];
     }
 
     function vAbs(a) {
-		return sqrt( add( square(a.x), square(a.z) ) );
+		return sqrt( add( square(a[firstCoord]), square(a[secondCoord]) ) );
     }
 
     function vMult(a, x) {
-		return { 
-			x: a.x * x,
-			z: a.z * x
-		};    	    	
+        var o = {};
+        o[firstCoord] = a[firstCoord] * x;
+        o[secondCoord] = a[secondCoord] * x;
+        return o;	    	
     }
 
     function vDist(a, b) { // from a to b
-		return { 
-			x: minus(b.x, a.x),
-			z: minus(b.z, a.z)
-		};
+        var o = {};
+        o[firstCoord] = minus(b[firstCoord], a[firstCoord]);
+        o[secondCoord] = minus(b[secondCoord], a[secondCoord]);
+        return o;
     }
 
-    function vAdd(a, b) { // from a to b
-		return { 
-			x: add(a.x, b.x),
-			z: add(a.z, b.z)
-		};
-    }
 
     function vProject(a, b) { // project a on b
-        return vMult(b, vDot(b, a) / square(vAbs(b)))            
+        return vMult(b, vDot(b, a) / square(vAbs(b)));            
     }
 
     // distance from point "c" to line with two points "a" and "b"
@@ -97,13 +132,11 @@ module.exports = function mathFn(use) {
     		vFrom = {};
 
     	if ( dotBC < 0 ) {
-    		console.log("lower")
     		vFrom = a;
     	} else if ( vCpl > vAbs(vB) ) {
-    		console.log("higher")
     		vFrom = b;
     	} else {
-    		vFrom = vAdd(a, vCp)
+    		vFrom = vAdd(a, vCp);
     	}
 		return vAbs( vDist( vFrom, c ) );
     }
@@ -113,64 +146,76 @@ module.exports = function mathFn(use) {
 //******************************************************
 
     function addm(x) {
-        this.value += x;
-        return this
+        /*jshint validthis: true */
+        this.value = this.value + x;
+        return this;
     }
 
     function squarem() {
+        /*jshint validthis: true */
         this.value = this.value * this.value;
         return this;
     }
 
     function sqrtm() {
+        /*jshint validthis: true */
         this.value = Math.sqrt(this.value);
-        return this
+        return this;
     }
    
     function diagm(x) {
-        this.value = sqrt( add( square(this.value), square(x) ) )
-        return this
+        /*jshint validthis: true */
+        this.value = sqrt( add( square(this.value), square(x) ) );
+        return this;
     }
 
     function minusm(x) {
+        /*jshint validthis: true */
         this.value -= x;
-        return this
+        return this;
     }
 
     function vDotm(b) {
-        return this.value.x * b.x + this.value.z * b.z;
+        /*jshint validthis: true */
+        return this.value[firstCoord] * b[firstCoord] + this.value[secondCoord] * b[secondCoord];
     }
 
     function vAbsm() {
-        return sqrt( add( square(this.value.x), square(this.value.z) ) );
+        /*jshint validthis: true */
+        return sqrt( add( square(this.value[firstCoord]), square(this.value[secondCoord]) ) );
     }
 
     function vMultm(k) {
-        this.value.x = this.value.x * k;
-        this.value.z = this.value.z * k;
-        return this  
+        /*jshint validthis: true */
+        this.value[firstCoord] = this.value[firstCoord] * k;
+        this.value[secondCoord] = this.value[secondCoord] * k;
+        return this; 
     }
 
     function vDistm(b) { // from a to b
-        this.value.x = minus(b.x, this.value.x);
-        this.value.z = minus(b.z, this.value.z);
-        return this
+        /*jshint validthis: true */
+        this.value[firstCoord] = minus(b[firstCoord], this.value[firstCoord]);
+        this.value[secondCoord] = minus(b[secondCoord], this.value[secondCoord]);
+        return this;
     }
 
     function vAddm(b) { // from a to b
-        this.value.x = add(b.x, this.value.x);
-        this.value.z = add(b.z, this.value.z);
-        return this
+        /*jshint validthis: true */
+        this.value[firstCoord] = add(b[firstCoord], this.value[firstCoord]);
+        this.value[secondCoord] = add(b[secondCoord], this.value[secondCoord]);
+        return this;
     }
 
     function vProjectm(b) { // project a on b
+        /*jshint validthis: true */
         var v = vMult(b, vDot(b, this.value) / square(vAbs(b)));
-        this.value.x = v.x;
-        this.value.z = v.z;
-        return this
+        this.value[firstCoord] = v[firstCoord];
+        this.value[secondCoord] = v[secondCoord];
+        return this;
     }
 
     function lDistm(a, b) {   // distance from point "c" to line with two points "a" and "b"
+        /*jshint validthis: true */
         var vC = vDist( a, this.value ),
             vB = vDist( a, b ),
             dotBC = vDot(vB, vC),
@@ -179,15 +224,16 @@ module.exports = function mathFn(use) {
             vFrom = {};
 
         if ( dotBC < 0 ) {
-            console.log("lower")
             vFrom = a;
         } else if ( vCpl > vAbs(vB) ) {
-            console.log("higher")
             vFrom = b;
         } else {
-            vFrom = vAdd(a, vCp)
+            vFrom = vAdd(a, vCp);
         }
         return vAbs( vDist( vFrom, this.value ) );
     }
 
-}
+    function toType(obj) {
+        return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
+    }
+};
